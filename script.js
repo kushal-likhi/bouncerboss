@@ -1,17 +1,22 @@
 /* begin Page */
 /* Created by Artisteer v3.1.0.46558 */
 // css helper
-(function($) {
+(function ($) {
     var data = [
-        {str:navigator.userAgent,sub:'Chrome',ver:'Chrome',name:'chrome'},
-        {str:navigator.vendor,sub:'Apple',ver:'Version',name:'safari'},
-        {prop:window.opera,ver:'Opera',name:'opera'},
-        {str:navigator.userAgent,sub:'Firefox',ver:'Firefox',name:'firefox'},
-        {str:navigator.userAgent,sub:'MSIE',ver:'MSIE',name:'ie'}];
-    for (var n=0;n<data.length;n++)	{
+        {str:navigator.userAgent, sub:'Chrome', ver:'Chrome', name:'chrome'},
+        {str:navigator.vendor, sub:'Apple', ver:'Version', name:'safari'},
+        {prop:window.opera, ver:'Opera', name:'opera'},
+        {str:navigator.userAgent, sub:'Firefox', ver:'Firefox', name:'firefox'},
+        {str:navigator.userAgent, sub:'MSIE', ver:'MSIE', name:'ie'}
+    ];
+    for (var n = 0; n < data.length; n++) {
         if ((data[n].str && (data[n].str.indexOf(data[n].sub) != -1)) || data[n].prop) {
-            var v = function(s){var i=s.indexOf(data[n].ver);return (i!=-1)?parseInt(s.substring(i+data[n].ver.length+1)):'';};
-            $('html').addClass(data[n].name+' '+data[n].name+v(navigator.userAgent) || v(navigator.appVersion)); break;			
+            var v = function (s) {
+                var i = s.indexOf(data[n].ver);
+                return (i != -1) ? parseInt(s.substring(i + data[n].ver.length + 1)) : '';
+            };
+            $('html').addClass(data[n].name + ' ' + data[n].name + v(navigator.userAgent) || v(navigator.appVersion));
+            break;
         }
     }
 })(jQuery);
@@ -20,7 +25,9 @@
 /* begin Menu */
 jQuery(function () {
     if (!jQuery.browser.msie || parseInt(jQuery.browser.version) > 7) return;
-    jQuery('ul.art-hmenu>li:not(:first-child)').each(function () { jQuery(this).prepend('<span class="art-hmenu-separator"> </span>'); });
+    jQuery('ul.art-hmenu>li:not(:first-child)').each(function () {
+        jQuery(this).prepend('<span class="art-hmenu-separator"> </span>');
+    });
     if (!jQuery.browser.msie || parseInt(jQuery.browser.version) > 6) return;
     jQuery('ul.art-hmenu li').each(function () {
         this.j = jQuery(this);
@@ -32,7 +39,7 @@ jQuery(function () {
             this.UL.addClass('art-hmenuhoverUL');
             this.A.addClass('art-hmenuhoverA');
         };
-        this.onmouseleave = function() {
+        this.onmouseleave = function () {
             this.j.removeClass('art-hmenuhover');
             this.UL.removeClass('art-hmenuhoverUL');
             this.A.removeClass('art-hmenuhoverA');
@@ -40,7 +47,9 @@ jQuery(function () {
     });
 });
 
-jQuery(function() { setHMenuOpenDirection({container: "div.art-sheet-body", defaultContainer: "#art-main", menuClass: "art-hmenu", leftToRightClass: "art-hmenu-left-to-right", rightToLeftClass: "art-hmenu-right-to-left"}); });
+jQuery(function () {
+    setHMenuOpenDirection({container:"div.art-sheet-body", defaultContainer:"#art-main", menuClass:"art-hmenu", leftToRightClass:"art-hmenu-left-to-right", rightToLeftClass:"art-hmenu-right-to-left"});
+});
 
 function setHMenuOpenDirection(menuInfo) {
     var defaultContainer = jQuery(menuInfo.defaultContainer);
@@ -60,11 +69,11 @@ function setHMenuOpenDirection(menuInfo) {
             var containerWidth = container.outerWidth();
 
             if (submenuLeft + submenuWidth >=
-                    containerLeft + containerWidth) 
-                /* right to left */
+                containerLeft + containerWidth)
+            /* right to left */
                 submenu.addClass(menuInfo.rightToLeftClass).find("ul").addClass(menuInfo.rightToLeftClass);
             if (submenuLeft <= containerLeft)
-                /* left to right */
+            /* left to right */
                 submenu.addClass(menuInfo.leftToRightClass).find("ul").addClass(menuInfo.leftToRightClass);
         }
     });
@@ -73,8 +82,12 @@ function setHMenuOpenDirection(menuInfo) {
 
 /* begin MenuSubItem */
 jQuery(function () {
-    jQuery("ul.art-hmenu ul li").hover(function () { jQuery(this).prev().children("a").addClass("art-hmenu-before-hovered"); }, 
-        function () { jQuery(this).prev().children("a").removeClass("art-hmenu-before-hovered"); });
+    jQuery("ul.art-hmenu ul li").hover(function () {
+            jQuery(this).prev().children("a").addClass("art-hmenu-before-hovered");
+        },
+        function () {
+            jQuery(this).prev().children("a").removeClass("art-hmenu-before-hovered");
+        });
 });
 
 jQuery(function () {
@@ -83,8 +96,8 @@ jQuery(function () {
     if (ieVersion > 7) return;
 
     /* Fix width of submenu items.
-    * The width of submenu item calculated incorrectly in IE6-7. IE6 has wider items, IE7 display items like stairs.
-    */
+     * The width of submenu item calculated incorrectly in IE6-7. IE6 has wider items, IE7 display items like stairs.
+     */
     jQuery.each(jQuery("ul.art-hmenu ul"), function () {
         var maxSubitemWidth = 0;
         var submenu = jQuery(this);
@@ -112,30 +125,36 @@ jQuery(function () {
 
 /* begin Layout */
 jQuery(function () {
-     var c = jQuery('div.art-content');
+    var c = jQuery('div.art-content');
     if (c.length !== 1) return;
     var s = c.parent().children('.art-layout-cell:not(.art-content)');
 
     jQuery(window).bind('resize', function () {
         c.css('height', 'auto');
         var innerHeight = 0;
-        jQuery('#art-main').children().each(function() {innerHeight += jQuery(this).outerHeight(true);});
+        jQuery('#art-main').children().each(function () {
+            innerHeight += jQuery(this).outerHeight(true);
+        });
         var r = jQuery('#art-main').height() - innerHeight;
         if (r > 0) c.css('height', r + c.parent().height() + 'px');
     });
 
     if (jQuery.browser.msie && parseInt(jQuery.browser.version) < 8) {
-        jQuery(window).bind('resize', function() {
+        jQuery(window).bind('resize', function () {
             var w = 0;
             c.hide();
-            s.each(function() { w += this.clientWidth; });
-            c.w = c.parent().width(); c.css('width', c.w - w + 'px');
+            s.each(function () {
+                w += this.clientWidth;
+            });
+            c.w = c.parent().width();
+            c.css('width', c.w - w + 'px');
             c.show();
         });
     }
 
     jQuery(window).trigger('resize');
-});/* end Layout */
+});
+/* end Layout */
 
 /* begin Button */
 function artButtonSetup(className) {
@@ -147,15 +166,65 @@ function artButtonSetup(className) {
             jQuery("<span class='art-button-wrapper'><span class='art-button-l'> </span><span class='art-button-r'> </span></span>").insertBefore(b).append(b);
             if (b.hasClass('active')) b.parent().addClass('active');
         }
-        b.mouseover(function () { jQuery(this).parent().addClass("hover"); });
-        b.mouseout(function () { var b = jQuery(this); b.parent().removeClass("hover"); if (!b.hasClass('active')) b.parent().removeClass('active'); });
-        b.mousedown(function () { var b = jQuery(this); b.parent().removeClass("hover"); if (!b.hasClass('active')) b.parent().addClass('active'); });
-        b.mouseup(function () { var b = jQuery(this); if (!b.hasClass('active')) b.parent().removeClass('active'); });
+        b.mouseover(function () {
+            jQuery(this).parent().addClass("hover");
+        });
+        b.mouseout(function () {
+            var b = jQuery(this);
+            b.parent().removeClass("hover");
+            if (!b.hasClass('active')) b.parent().removeClass('active');
+        });
+        b.mousedown(function () {
+            var b = jQuery(this);
+            b.parent().removeClass("hover");
+            if (!b.hasClass('active')) b.parent().addClass('active');
+        });
+        b.mouseup(function () {
+            var b = jQuery(this);
+            if (!b.hasClass('active')) b.parent().removeClass('active');
+        });
     });
 }
-jQuery(function() { artButtonSetup("art-button"); });
+jQuery(function () {
+    artButtonSetup("art-button");
+});
 
 /* end Button */
 
 
-
+//Slider
+$(window).load(function () {
+    $('#slider').nivoSlider({
+        effect:'random', // Specify sets like: 'fold,fade,sliceDown'
+        slices:15, // For slice animations
+        boxCols:8, // For box animations
+        boxRows:4, // For box animations
+        animSpeed:500, // Slide transition speed
+        pauseTime:3000, // How long each slide will show
+        startSlide:0, // Set starting Slide (0 index)
+        directionNav:true, // Next & Prev navigation
+        directionNavHide:true, // Only show on hover
+        controlNav:true, // 1,2,3... navigation
+        controlNavThumbs:false, // Use thumbnails for Control Nav
+        controlNavThumbsFromRel:false, // Use image rel for thumbs
+        controlNavThumbsSearch:'.jpg', // Replace this with...
+        controlNavThumbsReplace:'_thumb.jpg', // ...this in thumb Image src
+        keyboardNav:false, // Use left & right arrows
+        pauseOnHover:true, // Stop animation while hovering
+        manualAdvance:false, // Force manual transitions
+        captionOpacity:0.8, // Universal caption opacity
+        prevText:'Prev', // Prev directionNav text
+        nextText:'Next', // Next directionNav text
+        randomStart:false, // Start on a random slide
+        beforeChange:function () {
+        }, // Triggers before a slide transition
+        afterChange:function () {
+        }, // Triggers after a slide transition
+        slideshowEnd:function () {
+        }, // Triggers after all slides have been shown
+        lastSlide:function () {
+        }, // Triggers when last slide is shown
+        afterLoad:function () {
+        } // Triggers when slider has loaded
+    });
+});
